@@ -1,0 +1,4 @@
+name: WorldReset
+main: ss.linearlogic.worldreset.WorldReset
+author: LinearLogic
+version: 1.1
