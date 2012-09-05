@@ -1,4 +1,4 @@
-package ss.linearlogic.worldreset;
+package ss.linearlogic.worldreset.util;
 
 import java.util.logging.Logger;
 

@@ -1,7 +1,7 @@
 package ss.linearlogic.worldreset;
 
 import ss.linearlogic.worldreset.WorldReset;
-import ss.linearlogic.worldreset.WRLogger;
+import ss.linearlogic.worldreset.util.WRLogger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.bukkit.Bukkit;
 
 public class WRWorldManager
 {
@@ -20,7 +19,40 @@ public class WRWorldManager
 		this.plugin = wr;
 	}
 	
+	public void importWorlds()
+	{
+		File backupDir = new File(this.plugin.getDataFolder(), "backups");
+				
+		for (File source : backupDir.listFiles())
+		{
+			if (source.isDirectory()) {
+				File target = new File(this.plugin.getServer().getWorldContainer(), source.getName());
+				if (target.exists() && target.isDirectory()) { //delete the old world folder
+					try
+					{
+						delete(target);
+					} catch(IOException e) {
+						e.printStackTrace();
+						WRLogger.logSevere("Failed to reset world \"" + source.getName() + "\" - could not delete old world folder.");
+						continue;
+					}
+				}
+				
+				try
+				{
+		        	copyDir(source, target); //import the new world folder from the plugin's backup directory
+				} catch(IOException e) {
+		        	e.printStackTrace();
+					WRLogger.logSevere("Failed to reset world \"" + source.getName() + "\" - could not import the world from backup");
+					continue;
+				}
+				WRLogger.logInfo("Import of world \"" + source.getName() + "\" succeeded!");
+			}
+		}
+    }
+ 
 	public void delete(File file)
+		throws IOException
 	{
 		if (file.isDirectory())
 		{
@@ -33,49 +65,28 @@ public class WRWorldManager
 		}
 	}
 	
-	public void importWorld()
-	{
-    	File source = new File(this.plugin.getDataFolder(), "world");
-    	File target = new File(Bukkit.getServer().getWorldContainer(), "world");
-    	if(!source.exists())
-    	{
-    		WRLogger.logSevere("World reset failed!");
-    		WRLogger.logSevere("Could not find a source directory for the world import.");
-        }
-    	else
-    	{
-           try
-           {
-        	copyDir(source,target);
-           } catch(IOException e) {
-        	e.printStackTrace();
-			WRLogger.logSevere("World reset failed!");
-           }
-        }
-    }
- 
-    private static void copyDir(File src, File trg)
+    private static void copyDir(File source, File target)
     	throws IOException
     {
  
-    	if(src.isDirectory())
+    	if(source.isDirectory())
     	{
-    		if(!trg.exists())
+    		if(!target.exists())
     		{
-    		   trg.mkdir();
+    		   target.mkdir();
     		}
-    		String files[] = src.list();
+    		String files[] = source.list();
  
     		for (String file : files) {
-    		   File srcFile = new File(src, file);
-    		   File destFile = new File(trg, file);
-    		   copyDir(srcFile,destFile);
+    		   File srcFile = new File(source, file);
+    		   File destFile = new File(target, file);
+    		   copyDir(srcFile, destFile);
     		}
     	}
     	else
     	{
-    		InputStream in = new FileInputStream(src);
-    	    OutputStream out = new FileOutputStream(trg); 
+    		InputStream in = new FileInputStream(source);
+    	    OutputStream out = new FileOutputStream(target); 
  
     	    byte[] buffer = new byte[1024];
  
