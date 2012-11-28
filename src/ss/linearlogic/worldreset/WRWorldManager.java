@@ -1,15 +1,11 @@
 package ss.linearlogic.worldreset;
 
-import ss.linearlogic.worldreset.WorldReset;
-import ss.linearlogic.worldreset.util.WRLogger;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 
 public class WRWorldManager
 {
@@ -33,7 +29,7 @@ public class WRWorldManager
 						delete(target);
 					} catch(IOException e) {
 						e.printStackTrace();
-						WRLogger.logSevere("Failed to reset world \"" + source.getName() + "\" - could not delete old world folder.");
+						plugin.logInfo("Failed to reset world \"" + source.getName() + "\" - could not delete old world folder.");
 						continue;
 					}
 				}
@@ -43,15 +39,30 @@ public class WRWorldManager
 		        	copyDir(source, target); //import the new world folder from the plugin's backup directory
 				} catch(IOException e) {
 		        	e.printStackTrace();
-					WRLogger.logSevere("Failed to reset world \"" + source.getName() + "\" - could not import the world from backup");
+					plugin.logSevere("Failed to reset world \"" + source.getName() + "\" - could not import the world from backup.");
 					continue;
 				}
-				WRLogger.logInfo("Import of world \"" + source.getName() + "\" succeeded!");
+				plugin.logInfo("Import of world \"" + source.getName() + "\" succeeded!");
 			}
 		}
     }
  
-	public void delete(File file)
+	public void deleteWorlds() {
+		for (String worldName : plugin.getConfig().getStringList("worlds-to-load-with-new-seeds")) {
+			File target = new File(plugin.getServer().getWorldContainer(), worldName);
+			if (target.isDirectory())
+				try {
+					delete(target);
+				} catch (IOException e) {
+					e.printStackTrace();
+					plugin.logInfo("Failed to delete world \"" + worldName + "\", perhaps the file/folder is locked?");
+					return;
+				}
+			plugin.logInfo("Successfully loaded a random seed for world \"" + worldName + "\"!");
+		}
+	}
+	
+	private void delete(File file)
 		throws IOException
 	{
 		if (file.isDirectory())
@@ -61,7 +72,7 @@ public class WRWorldManager
 		}
 		if (!file.delete())
 		{
-			WRLogger.logSevere("While attempting world reset, failed to delete: " + file);
+			plugin.logSevere("While attempting world reset, failed to delete: " + file);
 		}
 	}
 	

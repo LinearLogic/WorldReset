@@ -1,15 +1,13 @@
-package ss.linearlogic.worldreset.util;
+package ss.linearlogic.worldreset;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import ss.linearlogic.worldreset.WorldReset;
 
 public class WRConfig
 {
@@ -80,10 +78,9 @@ public class WRConfig
 		{
 			config.save(configFile);
 		}
-		catch (IOException ioe)
+		catch (Exception e)
 		{
-			ioe.printStackTrace();
+			e.printStackTrace();
 		}
 	}
-
 }
