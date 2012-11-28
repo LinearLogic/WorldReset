@@ -4,11 +4,22 @@ Presenting the world's first standalone map reset plugin! When you restart your 
 
 NOTE: In order for this plugin to work, you have to /stop then start the server. A simple /reload will not work, and will likely cause the server to crash.
 
-###Changelog (1.1 --> 1.2)
+##Changelog
+###1.2 --> 1.3
+- Added choice (via config node) to choose between always resetting and resetting only when the '/resetworld' command is ran
+- Added random seed reset feature (rather than resetting to a stored backup, the reset simply loads a brand new world with a random seed)
+- Added config node to specify the worlds to regen with new seeds
+- Added option to automatically run a reset when all players leave the server, after a configurable player threshold (number of players on at a time) has been reached
+- Added a config node to specify the player count that needs to be reached in order to schedule a world reset
+- Removed logger class - logging calls are now managed via methods in the main class
+- Altered the method that kicks players when the server shuts down to remove dependency on Essentials
+- Repackaged classes
+- Removed Herobrine
+###1.1 --> 1.2
 - Added a config handler class
 - Added support for multiple worlds
 - Added config node for resets (world only resets if the node is set to true)
 - Added '/resetworld' command (sets the aforementioned node to true and - if typed again - stops the server)
 - Repackaged everything
-###Changelog (1.0 --> 1.1)
+###1.0 --> 1.1
 - Added a checker so that the world deletion and import processes are not initialized unless there is a folder named 'world' in the WorldReset plugin directory.
