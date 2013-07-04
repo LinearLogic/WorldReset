@@ -7,20 +7,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class WorldReset extends JavaPlugin {
 
-	private WRWorldManager wm;
-	private WRConfig configUtil;
-	private WRListener listener;
 	private ResetWorldCommand rwc;
+	private WRListener listener;
+	private WRWorldManager wm;
 	
 	public void onLoad() {
 		logInfo("Loading configuration...");
-		configUtil = new WRConfig(this);
-		configUtil.setupConfig();
-		configUtil.loadConfig();
+		saveDefaultConfig();
 
 		logInfo("Loading world manager...");
 		wm = new WRWorldManager(this);
-		
+
 		boolean backupsFound = false;
 		File backupDir = new File(getDataFolder(), "backups");
 		if (!backupDir.exists()) { //make sure there is a backup directory, and create one if there isn't
@@ -37,7 +34,7 @@ public class WorldReset extends JavaPlugin {
 			wm.deleteWorlds();
 			return;
 		}
-		
+
 		logInfo("Looking for world backups in '.../plugins/WorldReset/backups'");
 		for (File backup : backupDir.listFiles()) //make sure there are valid world folders in the backup directory
 			if ((backup.isDirectory()) && (backup.listFiles().length != 0))
@@ -50,9 +47,8 @@ public class WorldReset extends JavaPlugin {
 			logInfo("Reset complete!");
 		}
 		getConfig().set("reset-worlds-on-next-restart", getConfig().get("always-reset"));
-		configUtil.saveConfig();
-		configUtil.loadConfig();
 	}
+
 	public void onEnable() {
 		logInfo("Registering listener...");
 		listener = new WRListener(this);
@@ -64,31 +60,29 @@ public class WorldReset extends JavaPlugin {
 
 		logInfo("Enabled!");
 	}
-	
+
 	public void onDisable() {
-		configUtil.loadConfig();
-		configUtil.saveConfig();
+		saveConfig();
+		rwc = null;
+		listener = null;
+		wm = null;
 		logInfo("Disabled!");
 	}
-	
+
 	public void terminateForReset() {
 		for (Player player : getServer().getOnlinePlayers())
 			player.kickPlayer("Resetting the world(s)!");
 		getServer().shutdown();
 	}
-	
-	public WRConfig getConfigUtil() {
-		return this.configUtil;
-	}
-	
+
 	public void logInfo(String message) {
 		getLogger().info(message);
 	}
-	
+
 	public void logWarning(String message) {
 		getLogger().warning(message);
 	}
-	
+
 	public void logSevere(String message) {
 		getLogger().severe(message);
 	}
