@@ -13,7 +13,7 @@ public class ResetWorldCommand implements CommandExecutor {
 	public ResetWorldCommand(WorldReset plugin) {
 		this.plugin = plugin;
 	}
-	
+
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!sender.hasPermission("worldreset.reset")) {
 			sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.DARK_GREEN + "WorldReset" + ChatColor.GRAY + "] " + ChatColor.RED + "You don't have permission to schedule a world reset.");

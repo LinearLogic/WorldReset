@@ -1,7 +1,7 @@
 name: WorldReset
 main: ss.linearlogic.worldreset.WorldReset
 author: LinearLogic
-version: 1.3.2
+version: 1.3.3
 commands:
     resetworld:
         description: Schedules a world reset to occur on next server restart, and - if typed again - stops the server
