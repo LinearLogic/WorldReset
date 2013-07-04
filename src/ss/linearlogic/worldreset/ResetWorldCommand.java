@@ -27,7 +27,6 @@ public class ResetWorldCommand implements CommandExecutor {
 			plugin.getConfig().set("reset-worlds-on-next-restart", true);
 			sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.DARK_GREEN + "WorldReset" + ChatColor.GRAY + "] " + ChatColor.GREEN + "The worlds will reset on next restart! Type '/resetworld' again to stop the server now!");
 			plugin.saveConfig();
-			
 			iteration++;
 			return true;
 		}

@@ -9,8 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 
-public class WRConfig
-{
+public class WRConfig {
 
 	private WorldReset plugin;
 	public File configFile;
@@ -20,8 +19,7 @@ public class WRConfig
 		this.plugin = plugin;
 	}
 
-	public void setupConfig()
-	{
+	public void setupConfig() {
 		configFile = new File(plugin.getDataFolder(), "config.yml");
 		try {
             firstRunConfiguration();
@@ -31,55 +29,39 @@ public class WRConfig
 		config = new YamlConfiguration();
 	}
 
-	public void firstRunConfiguration() throws Exception
-	{
-		if(!configFile.exists())
-		{
+	public void firstRunConfiguration() throws Exception {
+		if(!configFile.exists()) {
 			configFile.getParentFile().mkdirs();
 			copy(plugin.getResource("config.yml"), configFile);
 		}
 	}
 	
-	public void copy(InputStream in, File file)
-	{
-		try
-		{
+	public void copy(InputStream in, File file) {
+		try {
 			OutputStream out = new FileOutputStream(file);
 			byte[] bBuffer = new byte[1024];
 			int len;
 			while ((len = in.read(bBuffer)) > 0)
-			{
 				out.write(bBuffer, 0, len);
-			}
 			out.close();
 			in.close();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void loadConfig()
-	{
-		try
-		{
+	public void loadConfig() {
+		try {
 			config.load(configFile);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void saveConfig()
-	{
-		try
-		{
+	public void saveConfig() {
+		try {
 			config.save(configFile);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
