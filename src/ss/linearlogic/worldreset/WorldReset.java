@@ -56,7 +56,7 @@ public class WorldReset extends JavaPlugin {
 
 		logInfo("Activating command handler...");
 		rwc = new ResetWorldCommand(this);
-		getCommand("resetworld").setExecutor(rwc);
+		getCommand("worldreset").setExecutor(rwc);
 
 		logInfo("Enabled!");
 	}
