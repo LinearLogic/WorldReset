@@ -1,13 +1,16 @@
 name: WorldReset
 main: ss.linearlogic.worldreset.WorldReset
 author: LinearLogic
-version: 1.4.1
+version: 1.4.2
 commands:
     worldreset:
-        description: Root command
+        description: WorldReset root command (type '/wr help' for subcommand info)
         usage: /wr [args]
         aliases: [wr, resetworld, resetworlds]
 permissions:
+    resetworld.reload:
+        description: Permission to run '/wr reload' to reload the configuration
+        default: op
     resetworld.reset:
         description: Permission to schedule a world reset, including via '/wr reset now'
         default: false

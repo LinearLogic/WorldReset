@@ -17,7 +17,24 @@ public class ResetWorldCommand implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (args.length == 0) {
-			sender.sendMessage(prefix + "Running v" + plugin.getDescription().getVersion() + " by LinearLogic.");
+			sender.sendMessage(prefix + "Running v" + plugin.getDescription().getVersion() + " by LinearLogic. Type " +
+		ChatColor.AQUA + "/wr help" + ChatColor.GRAY + " for a list of commands.");
+			return true;
+		}
+		if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?")) {
+			sender.sendMessage(ChatColor.WHITE + "<>" + ChatColor.GRAY + "-" + ChatColor.DARK_GRAY + "[" +
+					ChatColor.DARK_GREEN + "WorldReset Commands" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + "-" +
+					ChatColor.WHITE + "<>\n" + ChatColor.AQUA + "/wr help" + ChatColor.GRAY + " - displays command " +
+					"information\n" + ChatColor.AQUA + "/wr reload" + ChatColor.GRAY + " - reloads the config\n" +
+					ChatColor.AQUA + "/wr reset [now]" + ChatColor.GRAY + " - schedules a world reset to occur the " +
+					"next time the server is stopped and started. Appending the 'now' flag stops the server.");
+			return true;
+		}
+		if (args[0].equalsIgnoreCase("reload")) {
+			if (sender instanceof Player && !sender.hasPermission("worldreset.reload"))
+				return msgNoPerms(sender);
+			plugin.reloadConfig();
+			sender.sendMessage(prefix + ChatColor.GREEN + "Config reloaded!");
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("reset")) {
@@ -44,7 +61,8 @@ public class ResetWorldCommand implements CommandExecutor {
 				return true;
 			}
 		}
-		sender.sendMessage(prefix + ChatColor.RED + "Error: " + ChatColor.GRAY + "Invalid command or arguments.");
+		sender.sendMessage(prefix + ChatColor.RED + "Error: " + ChatColor.GRAY + "Invalid command or arguments. " +
+				"Type " + ChatColor.AQUA + "/wr help" + ChatColor.GRAY + " for assistance.");
 		return true;
 	}
 
