@@ -1,7 +1,7 @@
 name: WorldReset
 main: ss.linearlogic.worldreset.WorldReset
 author: LinearLogic
-version: 1.4.3
+version: 1.4.4
 commands:
     worldreset:
         description: WorldReset root command (type '/wr help' for subcommand info)
@@ -13,4 +13,10 @@ permissions:
         default: op
     worldreset.reset:
         description: Permission to schedule a world reset, including via '/wr reset now'
+        default: false
+    worldreset.settings.view:
+        description: Permission to view the configuration settings ingame
+        default: op
+    worldreset.settings.edit:
+        description: Permission to edit the configuration settings ingame
         default: false

@@ -47,6 +47,7 @@ public class WorldReset extends JavaPlugin {
 			logInfo("Reset complete!");
 		}
 		getConfig().set("reset-worlds-on-next-restart", getConfig().get("always-reset"));
+		saveConfig();
 	}
 
 	public void onEnable() {
