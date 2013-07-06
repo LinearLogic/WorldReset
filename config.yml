@@ -1,4 +1,8 @@
 reset-worlds-on-next-restart: false
-random-seed: false
+random-seed:
+    enabled: true
+    worlds:
+        - change_me
 reset-when-server-empty: true
 player-count-to-activate-reset: 10
+always-reset: false

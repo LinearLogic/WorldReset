@@ -85,12 +85,13 @@ public class ResetWorldCommand implements CommandExecutor {
 						ChatColor.DARK_GREEN + "WorldReset Settings" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY +
 						"-" + ChatColor.WHITE + "<>\n" + ChatColor.GRAY + "[1] Reset scheduled: " + (plugin.getConfig()
 						.getBoolean("reset-worlds-on-next-restart") ? ChatColor.GREEN + "yes" : ChatColor.RED + "no") +
-						ChatColor.GRAY + "\n[2] Random seed: " + (plugin.getConfig().getBoolean("random-seed") ?
-						ChatColor.GREEN + "yes"	: ChatColor.RED + "no") + ChatColor.GRAY + "\n[3] Shutdown for " +
+						ChatColor.GRAY + "\n[2] Random seed: " + (plugin.getConfig().getBoolean("random-seed.enabled")
+						? ChatColor.GREEN + "yes" : ChatColor.RED + "no") + ChatColor.GRAY + "\n[3] Shutdown for " +
 						"reset when server is empty: " + (plugin.getConfig().getBoolean("reset-when-server-empty") ?
 						ChatColor.GREEN + "yes" : ChatColor.RED + "no") + ChatColor.GRAY + "\n[4] Player count " +
 						"needed to activate reset: " +	ChatColor.LIGHT_PURPLE + plugin.getConfig().getInt("player-" +
-						"count-to-activate-reset"));
+						"count-to-activate-reset") + ChatColor.GRAY + "\n[5] Always reset: " + (plugin.getConfig()
+						.getBoolean("always-reset") ? ChatColor.GREEN + "yes" : ChatColor.RED + "no"));
 				return true;
 			}
 			if (args[1].equalsIgnoreCase("edit") && args.length == 4) {
@@ -108,7 +109,7 @@ public class ResetWorldCommand implements CommandExecutor {
 						path = "reset-worlds-on-next-restart";
 						break;
 					case 2:
-						path = "random-seed";
+						path = "random-seed.enabled";
 						break;
 					case 3:
 						path = "reset-when-server-empty";
@@ -129,9 +130,12 @@ public class ResetWorldCommand implements CommandExecutor {
 						plugin.saveConfig();
 						sender.sendMessage(prefix + ChatColor.GREEN + "Settings updated!");
 						return true;
+					case 5:
+						path = "always-reset";
+						break;
 					default: // Invalid setting ID
 						sender.sendMessage(prefix + ChatColor.RED + "Error: " + ChatColor.GRAY + "the setting ID " +
-								"must be between 1 and 4, inclusive.");
+								"must be between 1 and 5, inclusive.");
 						return true;
 				}
 				if (args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("yes"))

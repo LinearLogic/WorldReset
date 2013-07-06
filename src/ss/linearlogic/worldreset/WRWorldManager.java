@@ -25,7 +25,7 @@ public class WRWorldManager {
 						delete(target);
 					} catch(IOException e) {
 						e.printStackTrace();
-						plugin.logInfo("Failed to reset world \"" + source.getName() + "\" - could not delete old world folder.");
+						plugin.logSevere("Failed to reset world \"" + source.getName() + "\" - could not delete old world folder.");
 						continue;
 					}
 				}
@@ -43,18 +43,29 @@ public class WRWorldManager {
     }
  
 	public void deleteWorlds() {
-		for (String worldName : plugin.getConfig().getStringList("worlds-to-load-with-new-seeds")) {
+		boolean worldsListed = false;
+		for (String worldName : plugin.getConfig().getStringList("random-seed.worlds")) {
+			if (!worldsListed)
+				worldsListed = true;
 			File target = new File(plugin.getServer().getWorldContainer(), worldName);
+			if (!target.exists()) {
+				plugin.logSevere("Could not load world \"" + worldName + "\" with a random seed: no such world " +
+						"exists in the server directory!");
+				return;
+			}
 			if (target.isDirectory())
 				try {
 					delete(target);
 				}catch (IOException e) {
 					e.printStackTrace();
-					plugin.logInfo("Failed to delete world \"" + worldName + "\", perhaps the file/folder is locked?");
+					plugin.logSevere("Failed to delete world \"" + worldName + "\", perhaps the file/folder is locked?");
 					return;
 				}
 			plugin.logInfo("Successfully loaded a random seed for world \"" + worldName + "\"!");
 		}
+		if (!worldsListed)
+			plugin.logWarning("The random seed option is enabled but no worlds are listed to be deleted and " +
+					"regenerated with random seeds.");
 	}
 
 	private void delete(File file) throws IOException {

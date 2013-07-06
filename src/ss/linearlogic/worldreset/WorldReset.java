@@ -25,26 +25,24 @@ public class WorldReset extends JavaPlugin {
 			logInfo("Place world folders you want to reset from in '.../plugins/WorldReset/backups'");
 			backupDir.mkdirs();
 		}
-		if (!getConfig().getBoolean("reset-worlds-on-next-restart")) {
+		if (!getConfig().getBoolean("reset-worlds-on-next-restart"))
 			logInfo("No world resets scheduled in the config, aborting.");
-			return;
-		}
-		if (getConfig().getBoolean("random-seed")) {
-			logInfo("Loading worlds with randomly generated seeds...");
-			wm.deleteWorlds();
-			return;
-		}
-
-		logInfo("Looking for world backups in '.../plugins/WorldReset/backups'");
-		for (File backup : backupDir.listFiles()) //make sure there are valid world folders in the backup directory
-			if ((backup.isDirectory()) && (backup.listFiles().length != 0))
-				backupsFound = true;
-		if (!backupsFound) { //backup folder doesn't contain world folders - cancel the import
-			logSevere("Could not find any world folders to backup from!");
-			logSevere("Aborting world reset...");
-		} else {
-			wm.importWorlds(); // Do the stuff with the things
-			logInfo("Reset complete!");
+		else {
+			logInfo("Looking for world backups in '.../plugins/WorldReset/backups'");
+			for (File backup : backupDir.listFiles()) //make sure there are valid world folders in the backup directory
+				if ((backup.isDirectory()) && (backup.listFiles().length != 0))
+					backupsFound = true;
+			if (!backupsFound) {//backup folder doesn't contain world folders - cancel the import
+				logSevere("A world reset is scheduled but there are no folders to backup from (ignore if ");
+				logSevere("Aborting world transfer...");
+			} else {
+				wm.importWorlds(); // Do the stuff with the things
+				logInfo("World transfer complete!");
+			}
+			if (getConfig().getBoolean("random-seed.enabled")) {
+				logInfo("Loading worlds with randomly generated seeds...");
+				wm.deleteWorlds();
+			}
 		}
 		getConfig().set("reset-worlds-on-next-restart", getConfig().get("always-reset"));
 		saveConfig();
