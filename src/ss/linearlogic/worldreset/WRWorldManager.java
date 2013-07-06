@@ -16,16 +16,16 @@ public class WRWorldManager {
 	}
 
 	public void importWorlds() {
+		boolean errors = false;
 		File backupDir = new File(this.plugin.getDataFolder(), "backups");
 		for (File source : backupDir.listFiles()) {
 			if (source.isDirectory()) {
 				File target = new File(this.plugin.getServer().getWorldContainer(), source.getName());
 				if (target.exists() && target.isDirectory()) { //delete the old world folder
-					try {
-						delete(target);
-					} catch(IOException e) {
-						e.printStackTrace();
-						plugin.logSevere("Failed to reset world \"" + source.getName() + "\" - could not delete old world folder.");
+					if (!delete(target)) {
+						plugin.logSevere("Failed to reset world \"" + source.getName() + "\" - could not delete old " +
+								"world folder.");
+						errors = true;
 						continue;
 					}
 				}
@@ -34,10 +34,12 @@ public class WRWorldManager {
 		        	copyDir(source, target); //import the new world folder from the plugin's backup directory
 				} catch(IOException e) {
 		        	e.printStackTrace();
-					plugin.logSevere("Failed to reset world \"" + source.getName() + "\" - could not import the world from backup.");
-					continue;
+					plugin.logSevere("Failed to reset world \"" + source.getName() + "\" - could not import the " +
+							"world from backup.");
+					errors = true;
 				}
-				plugin.logInfo("Import of world \"" + source.getName() + "\" succeeded!");
+				plugin.logInfo("Import of world \"" + source.getName() + "\" " + (errors ? "failed!" : "succeeded!"));
+				errors = false;
 			}
 		}
     }
@@ -53,27 +55,27 @@ public class WRWorldManager {
 						"exists in the server directory!");
 				return;
 			}
-			if (target.isDirectory())
-				try {
-					delete(target);
-				}catch (IOException e) {
-					e.printStackTrace();
-					plugin.logSevere("Failed to delete world \"" + worldName + "\", perhaps the file/folder is locked?");
-					return;
+			if (target.isDirectory()) {
+				if (!delete(target)) {
+					plugin.logSevere("Failed to delete world \"" + worldName + "\", perhaps the folder is locked?");
+					continue;
 				}
-			plugin.logInfo("Successfully loaded a random seed for world \"" + worldName + "\"!");
+				plugin.logInfo("Successfully loaded a random seed for world \"" + worldName + "\"!");
+			}
 		}
 		if (!worldsListed)
 			plugin.logWarning("The random seed option is enabled but no worlds are listed to be deleted and " +
 					"regenerated with random seeds.");
 	}
 
-	private void delete(File file) throws IOException {
+	private boolean delete(File file) {
 		if (file.isDirectory())
 			for (File subfile : file.listFiles())
-				delete(subfile);
+				if (!delete(subfile))
+					return false;
 		if (!file.delete())
-			plugin.logSevere("While attempting world reset, failed to delete: " + file);
+			return false;
+		return true;
 	}
 
     private static void copyDir(File source, File target) throws IOException {

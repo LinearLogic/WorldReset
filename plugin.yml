@@ -1,7 +1,7 @@
 name: WorldReset
 main: ss.linearlogic.worldreset.WorldReset
 author: LinearLogic
-version: 1.4.5
+version: 1.4.6
 commands:
     worldreset:
         description: WorldReset root command (type '/wr help' for subcommand info)

@@ -37,7 +37,7 @@ public class WorldReset extends JavaPlugin {
 				logSevere("Aborting world transfer...");
 			} else {
 				wm.importWorlds(); // Do the stuff with the things
-				logInfo("World transfer complete!");
+				logInfo("World transfer complete.");
 			}
 			if (getConfig().getBoolean("random-seed.enabled")) {
 				logInfo("Loading worlds with randomly generated seeds...");
