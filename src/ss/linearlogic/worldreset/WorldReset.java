@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class WorldReset extends JavaPlugin {
 
-	private ResetWorldCommand rwc;
+	private WRCommand cmd;
 	private WRListener listener;
 	private WRWorldManager wm;
 	
@@ -54,15 +54,15 @@ public class WorldReset extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(listener, this);
 
 		logInfo("Activating command handler...");
-		rwc = new ResetWorldCommand(this);
-		getCommand("worldreset").setExecutor(rwc);
+		cmd = new WRCommand(this);
+		getCommand("worldreset").setExecutor(cmd);
 
 		logInfo("Enabled!");
 	}
 
 	public void onDisable() {
 		saveConfig();
-		rwc = null;
+		cmd = null;
 		listener = null;
 		wm = null;
 		logInfo("Disabled!");

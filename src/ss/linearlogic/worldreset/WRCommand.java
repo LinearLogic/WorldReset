@@ -6,12 +6,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class ResetWorldCommand implements CommandExecutor {
+public class WRCommand implements CommandExecutor {
 
-	private String prefix = ChatColor.GRAY + "[" + ChatColor.DARK_GREEN + "WorldReset" + ChatColor.GRAY + "] ";
+	private final String prefix = ChatColor.GRAY + "[" + ChatColor.DARK_GREEN + "WorldReset" + ChatColor.GRAY + "] ";
 	private WorldReset plugin;
 
-	public ResetWorldCommand(WorldReset plugin) {
+	public WRCommand(WorldReset plugin) {
 		this.plugin = plugin;
 	}
 
@@ -26,10 +26,10 @@ public class ResetWorldCommand implements CommandExecutor {
 					ChatColor.DARK_GREEN + "WorldReset Commands" + ChatColor.DARK_GRAY + "]" + ChatColor.GRAY + "-" +
 					ChatColor.WHITE + "<>\n" + ChatColor.AQUA + "/wr help" + ChatColor.GRAY + " - displays command " +
 					"information\n" + ChatColor.AQUA + "/wr reload" + ChatColor.GRAY + " - reloads the config\n" +
-					ChatColor.AQUA + "/wr reset [now/cancel]" + ChatColor.GRAY + " - schedules a world reset to occur the " +
-					"next time the server is stopped and started. The 'now' flag stops the server; the 'cancel flag " +
-					"removes a scheduled world reset.\n" + ChatColor.AQUA + "/wr settings [edit <setting ID> " +
-					"<setting value>]" + ChatColor.GRAY + " - " + "displays or edits the config settings");
+					ChatColor.AQUA + "/wr reset [now/cancel]" + ChatColor.GRAY + " - schedules a world reset to " +
+					"occur the next time the server is stopped and started. The 'now' flag stops the server; the " +
+					"'cancel' flag removes a scheduled world reset.\n" + ChatColor.AQUA + "/wr settings [edit " +
+					"<setting ID> <setting value>]" + ChatColor.GRAY + " - displays or edits the config settings");
 			return true;
 		}
 		if (args[0].equalsIgnoreCase("reload")) {
